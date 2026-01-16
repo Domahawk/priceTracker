@@ -2,18 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.3.0)
-    bigdecimal (4.0.1)
     childprocess (4.1.0)
-    csv (3.3.5)
     dotenv (3.2.0)
-    httparty (0.24.0)
-      csv
-      mini_mime (>= 1.0.0)
-      multi_xml (>= 0.5.2)
     logger (1.7.0)
-    mini_mime (1.1.5)
-    multi_xml (0.8.1)
-      bigdecimal (>= 3.1, < 5)
     nokogiri (1.19.0-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.0-aarch64-linux-musl)
@@ -56,23 +47,16 @@ PLATFORMS
 DEPENDENCIES
   base64
   dotenv
-  httparty
   logger
-  nokogiri
   selenium-webdriver
   webdrivers
   yaml
 
 CHECKSUMS
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
-  bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
   childprocess (4.1.0) sha256=3616ce99ccb242361ce7f2b19bf9ff3e6bc1d98b927c7edc29af8ca617ba6cd3
-  csv (3.3.5) sha256=6e5134ac3383ef728b7f02725d9872934f523cb40b961479f69cf3afa6c8e73f
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
-  httparty (0.24.0) sha256=cd93eec3d92c327df77b545e71123a38394e5ae723fb739bca18e0e75143b0ac
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
-  mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
-  multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
   nokogiri (1.19.0-aarch64-linux-gnu) sha256=11a97ecc3c0e7e5edcf395720b10860ef493b768f6aa80c539573530bc933767
   nokogiri (1.19.0-aarch64-linux-musl) sha256=eb70507f5e01bc23dad9b8dbec2b36ad0e61d227b42d292835020ff754fb7ba9
   nokogiri (1.19.0-arm-linux-gnu) sha256=572a259026b2c8b7c161fdb6469fa2d0edd2b61cd599db4bbda93289abefbfe5

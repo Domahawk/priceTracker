@@ -15,15 +15,10 @@ class LinksScraper < Scraper
 
     wait = Selenium::WebDriver::Wait.new(timeout: 15)
 
-    begin
-      cookie_button = wait.until {
-        driver.find_element(class: "cky-btn-accept")
-      }
-
-      cookie_button.click
-    rescue
-      # popup se možda već zatvorio — ignoriraj
-    end
+    cookie_button = wait.until {
+      driver.find_element(class: "cky-btn-accept")
+    }
+    cookie_button.click
 
     wait.until { driver.find_element(css: "span[class^='price-value-']") }
 
@@ -59,15 +54,11 @@ class LinksScraper < Scraper
 
     wait = Selenium::WebDriver::Wait.new(timeout: 15)
 
-    begin
-      cookie_button = wait.until {
-        driver.find_element(class: "cky-btn-accept")
-      }
+    cookie_button = wait.until {
+      driver.find_element(class: "cky-btn-accept")
+    }
 
-      cookie_button.click
-    rescue
-      # popup se možda već zatvorio — ignoriraj
-    end
+    cookie_button.click
 
     wait.until { driver.find_element(class: "card-link") }
 
@@ -76,7 +67,5 @@ class LinksScraper < Scraper
     driver.quit
 
     dohvati_proizvod(link)
-  rescue
-    []
   end
 end

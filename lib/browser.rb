@@ -26,7 +26,7 @@ module Browser
         service: Selenium::WebDriver::Edge::Service.new(path: path)
       )
     else
-      # type code here
+      raise "Unsupported browser: #{browser}"
     end
   end
 end

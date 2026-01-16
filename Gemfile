@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "nokogiri"
-gem "httparty"
 gem "yaml"
 gem "selenium-webdriver"
 gem "webdrivers"

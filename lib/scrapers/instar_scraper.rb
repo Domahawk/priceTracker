@@ -15,15 +15,12 @@ class InstarScraper < Scraper
     driver.navigate.to(url)
 
     wait = Selenium::WebDriver::Wait.new(timeout: 15)
-
     wait.until { driver.find_element(class: "c-title") }
 
     naziv = driver.find_element(class: "c-title").text
     cijena_text = driver.find_element(class: "mainprice").text
 
     driver.quit
-
-    return nil if naziv.nil? || cijena_text.nil?
 
     iznos = cijena_text
               .gsub(".", "")
