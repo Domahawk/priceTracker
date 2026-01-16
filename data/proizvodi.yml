@@ -1,1 +1,13 @@
-
+---
+- :naziv: Gaming stolica EPOCH Oberon, crna
+  :trgovina: Links
+  :url: https://www.links.hr/hr/gaming-stolica-epoch-oberon-crna-011103152
+  :cijene:
+  - :iznos: 229.99
+    :datum_vrijeme: '2026-01-16T13:14:30+01:00'
+- :naziv: Gaming stolica Ergovision Mikado, crna
+  :trgovina: Instar
+  :url: https://www.instar-informatika.hr/gaming-stolica-ergovision-mikado-crna/198089/product/
+  :cijene:
+  - :iznos: 199.99
+    :datum_vrijeme: '2026-01-16T13:14:37+01:00'

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "nokogiri"
-require "open-uri"
 require_relative "scraper"
 require_relative "../models/proizvod"
 require_relative "../models/cijena"
