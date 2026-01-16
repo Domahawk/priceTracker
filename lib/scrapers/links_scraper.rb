@@ -23,8 +23,6 @@ class LinksScraper < Scraper
               .gsub(",", ".")
               .scan(/\d+\.?\d*/).first.to_f
 
-    model = extract_model(naziv)
-
     proizvod = Proizvod.new(
       naziv: naziv,
       trgovina: "Links",
@@ -37,36 +35,40 @@ class LinksScraper < Scraper
   end
 
   def pretrazi_proizvod(pojam)
+
+    puts pojam
+
     query = URI.encode_www_form_component(pojam)
-    url = "https://www.links.hr/search?query=#{query}"
+    url = "https://www.links.hr"
 
-    html = URI.open(url, "User-Agent" => USER_AGENT)
-    doc = Nokogiri::HTML(html)
+    puts url
 
-    proizvodi = []
-
-    doc.css(".product-item").each do |item|
-      naziv = item.at_css(".product-name")&.text&.strip
-      cijena = item.at_css(".price")&.text
-
-      next if naziv.nil? || cijena.nil?
-
-      iznos = cijena.gsub(".", "").gsub(",", ".").scan(/\d+\.?\d*/).first.to_f
-
-      proizvodi << {
-        naziv: naziv,
-        iznos: iznos
+    response = HTTParty.get(
+      url,
+      headers: {
+        "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+        "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language" => "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer" => "https://www.links.hr/",
+        "Connection" => "keep-alive"
       }
-    end
+      )
 
-    proizvodi
+    puts response.headers
+    puts response.cookies
+
+    puts response.code
+
+    doc = Nokogiri::HTML(html)
+    item = doc.css("div.col-6.col-md-4 div.cards--card").first
+    link = item.at_css("a.card-link")
+
+    puts link
+
+    url = "https://www.links.hr" + link["href"]
+
+    dohvati_proizvod(url)
   rescue
     []
-  end
-  private
-
-  def extract_model(naziv)
-    # Uzmi prve 3–4 riječi (npr "RTX 4060 Dual")
-    naziv.split(" ")[0..3].join(" ")
   end
 end

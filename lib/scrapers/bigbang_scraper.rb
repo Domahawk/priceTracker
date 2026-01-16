@@ -13,8 +13,11 @@ class BigbangScraper < Scraper
     html = URI.open(url, "User-Agent" => USER_AGENT)
     doc = Nokogiri::HTML(html)
 
-    naziv = doc.at_css("h1")&.text&.strip
-    cijena_text = doc.at_css("span.price")&.text
+    naziv = doc.at_css("h1.cd-title")&.text&.strip
+    cijena_text = doc.at_css("div.price-container div.current-price.red span.p-w")&.text
+
+    puts naziv
+    puts cijena_text
 
     return nil if naziv.nil? || cijena_text.nil?
 

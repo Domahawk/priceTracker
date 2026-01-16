@@ -13,8 +13,8 @@ class InstarScraper < Scraper
     html = URI.open(url, "User-Agent" => USER_AGENT)
     doc = Nokogiri::HTML(html)
 
-    naziv = doc.at_css("h1")&.text&.strip
-    cijena_text = doc.at_css("span.price")&.text
+    naziv = doc.at_css("h1.c-title")&.text&.strip
+    cijena_text = doc.at_css("span.mainprice")&.text
 
     return nil if naziv.nil? || cijena_text.nil?
 
@@ -23,12 +23,9 @@ class InstarScraper < Scraper
               .gsub(",", ".")
               .scan(/\d+\.?\d*/).first.to_f
 
-    model = extract_model(naziv)
-
     proizvod = Proizvod.new(
       naziv: naziv,
-      model: model,
-      trgovina: "Links",
+      trgovina: "Instar",
       url: url
     )
 
@@ -42,35 +39,29 @@ class InstarScraper < Scraper
 
   def pretrazi_proizvod(pojam)
     query = URI.encode_www_form_component(pojam)
-    url = "https://www.links.hr/search?query=#{query}"
+    url = "https://www.instar-informatika.hr/Search/?fs=1&term?#{query}"
+
+    puts url
 
     html = URI.open(url, "User-Agent" => USER_AGENT)
     doc = Nokogiri::HTML(html)
 
-    proizvodi = []
+    grid = doc.at_css("#grid div.productEntity")
 
-    doc.css(".product-item").each do |item|
-      naziv = item.at_css(".product-name")&.text&.strip
-      cijena = item.at_css(".price")&.text
+    puts grid
 
-      next if naziv.nil? || cijena.nil?
-
-      iznos = cijena.gsub(".", "").gsub(",", ".").scan(/\d+\.?\d*/).first.to_f
-
-      proizvodi << {
-        naziv: naziv,
-        iznos: iznos
-      }
-    end
-
-    proizvodi
-  rescue
-    []
-  end
-  private
-
-  def extract_model(naziv)
-    # Uzmi prve 3–4 riječi (npr "RTX 4060 Dual")
-    naziv.split(" ")[0..3].join(" ")
+    # items = grid.css("div.productEntity")
+    # firstItem = items.first
+    # puts firstItem
+    #
+    # item = firstItem.at_css("a.productEntityClick")
+    #
+    # link = item.at_css("a.card-link")
+    #
+    # puts link
+    #
+    # url = "https://www.instar-informatika.hr" + link["href"]
+    #
+    # dohvati_proizvod(url)
   end
 end
