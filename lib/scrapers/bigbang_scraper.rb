@@ -5,16 +5,21 @@ require "open-uri"
 require_relative "scraper"
 require_relative "../models/proizvod"
 require_relative "../models/cijena"
+require_relative "../browser"
 
 class BigbangScraper < Scraper
   USER_AGENT = "Mozilla/5.0 (PriceTrackerBot)"
 
   def dohvati_proizvod(url)
-    html = URI.open(url, "User-Agent" => USER_AGENT)
-    doc = Nokogiri::HTML(html)
+    driver = Browser.driver
+    driver.navigate.to(url)
 
-    naziv = doc.at_css("h1.cd-title")&.text&.strip
-    cijena_text = doc.at_css("div.price-container div.current-price.red span.p-w")&.text
+    wait = Selenium::WebDriver::Wait.new(timeout: 15)
+
+    wait.until { driver.find_element(class: "old-price") }
+
+    naziv = driver.find_element(class: "cd-title").text
+    cijena_text = driver.find_element(class: "old-price").text
 
     puts naziv
     puts cijena_text
@@ -26,11 +31,8 @@ class BigbangScraper < Scraper
               .gsub(",", ".")
               .scan(/\d+\.?\d*/).first.to_f
 
-    model = extract_model(naziv)
-
     proizvod = Proizvod.new(
       naziv: naziv,
-      model: model,
       trgovina: "Links",
       url: url
     )
@@ -38,9 +40,6 @@ class BigbangScraper < Scraper
     proizvod.dodaj_cijenu(Cijena.new(iznos))
 
     proizvod
-  rescue => e
-    puts "Greška pri dohvaćanju s Linksa: #{e.message}"
-    nil
   end
 
   def pretrazi_proizvod(pojam)
@@ -69,11 +68,5 @@ class BigbangScraper < Scraper
     proizvodi
   rescue
     []
-  end
-  private
-
-  def extract_model(naziv)
-    # Uzmi prve 3–4 riječi (npr "RTX 4060 Dual")
-    naziv.split(" ")[0..3].join(" ")
   end
 end

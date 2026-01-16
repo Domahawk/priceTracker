@@ -10,11 +10,25 @@ class LinksScraper < Scraper
   USER_AGENT = "Mozilla/5.0 (PriceTrackerBot)"
 
   def dohvati_proizvod(url)
-    html = URI.open(url, "User-Agent" => USER_AGENT)
-    doc = Nokogiri::HTML(html)
+    driver = Browser.driver
+    driver.navigate.to(url)
 
-    naziv = doc.at_css("strong.current-item[itemprop='name']")&.text&.strip
-    cijena_text = doc.at_css("span.old-price")&.text
+    wait = Selenium::WebDriver::Wait.new(timeout: 15)
+
+    begin
+      cookie_button = wait.until {
+        driver.find_element(class: "cky-btn-accept")
+      }
+
+      cookie_button.click
+    rescue
+      # popup se možda već zatvorio — ignoriraj
+    end
+
+    wait.until { driver.find_element(class: "card-link") }
+
+    naziv = driver.find_element(css: "div.product-name h1").text
+    cijena_text = driver.find_element(css: "div.prices span.old-price").text
 
     return nil if naziv.nil? || cijena_text.nil?
 
@@ -35,39 +49,29 @@ class LinksScraper < Scraper
   end
 
   def pretrazi_proizvod(pojam)
-
-    puts pojam
-
     query = URI.encode_www_form_component(pojam)
-    url = "https://www.links.hr"
+    url = "https://www.links.hr/search/?q=#{query}"
 
-    puts url
+    driver = Browser.driver
+    driver.navigate.to(url)
 
-    response = HTTParty.get(
-      url,
-      headers: {
-        "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
-        "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language" => "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Referer" => "https://www.links.hr/",
-        "Connection" => "keep-alive"
+    wait = Selenium::WebDriver::Wait.new(timeout: 15)
+
+    begin
+      cookie_button = wait.until {
+        driver.find_element(class: "cky-btn-accept")
       }
-      )
 
-    puts response.headers
-    puts response.cookies
+      cookie_button.click
+    rescue
+      # popup se možda već zatvorio — ignoriraj
+    end
 
-    puts response.code
+    wait.until { driver.find_element(class: "card-link") }
 
-    doc = Nokogiri::HTML(html)
-    item = doc.css("div.col-6.col-md-4 div.cards--card").first
-    link = item.at_css("a.card-link")
+    link = driver.find_element(class: "card-link").attribute("href")
 
-    puts link
-
-    url = "https://www.links.hr" + link["href"]
-
-    dohvati_proizvod(url)
+    dohvati_proizvod(link)
   rescue
     []
   end

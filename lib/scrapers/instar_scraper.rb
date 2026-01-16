@@ -10,11 +10,15 @@ class InstarScraper < Scraper
   USER_AGENT = "Mozilla/5.0 (PriceTrackerBot)"
 
   def dohvati_proizvod(url)
-    html = URI.open(url, "User-Agent" => USER_AGENT)
-    doc = Nokogiri::HTML(html)
+    driver = Browser.driver
+    driver.navigate.to(url)
 
-    naziv = doc.at_css("h1.c-title")&.text&.strip
-    cijena_text = doc.at_css("span.mainprice")&.text
+    wait = Selenium::WebDriver::Wait.new(timeout: 15)
+
+    wait.until { driver.find_element(class: "c-title") }
+
+    naziv = driver.find_element(class: "c-title").text
+    cijena_text = driver.find_element(class: "mainprice").text
 
     return nil if naziv.nil? || cijena_text.nil?
 
@@ -25,43 +29,30 @@ class InstarScraper < Scraper
 
     proizvod = Proizvod.new(
       naziv: naziv,
-      trgovina: "Instar",
+      trgovina: "Links",
       url: url
     )
 
     proizvod.dodaj_cijenu(Cijena.new(iznos))
 
     proizvod
-  rescue => e
-    puts "Greška pri dohvaćanju s Linksa: #{e.message}"
-    nil
   end
 
   def pretrazi_proizvod(pojam)
     query = URI.encode_www_form_component(pojam)
-    url = "https://www.instar-informatika.hr/Search/?fs=1&term?#{query}"
+    url = "https://www.instar-informatika.hr/Search/?term=#{query}"
 
     puts url
 
-    html = URI.open(url, "User-Agent" => USER_AGENT)
-    doc = Nokogiri::HTML(html)
+    driver = Browser.driver
+    driver.navigate.to(url)
 
-    grid = doc.at_css("#grid div.productEntity")
+      wait = Selenium::WebDriver::Wait.new(timeout: 15)
 
-    puts grid
+    wait.until { driver.find_element(css: "div.product-image a") }
 
-    # items = grid.css("div.productEntity")
-    # firstItem = items.first
-    # puts firstItem
-    #
-    # item = firstItem.at_css("a.productEntityClick")
-    #
-    # link = item.at_css("a.card-link")
-    #
-    # puts link
-    #
-    # url = "https://www.instar-informatika.hr" + link["href"]
-    #
-    # dohvati_proizvod(url)
+    link = driver.find_element(css: "div.product-image a").attribute("href")
+
+    dohvati_proizvod(link)
   end
 end
