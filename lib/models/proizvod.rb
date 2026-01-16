@@ -39,5 +39,28 @@ class Proizvod
   def to_s
     "#{@naziv} (#{@trgovina}) - #{trenutna_cijena} EUR"
   end
+
+  def to_h
+    {
+      naziv: @naziv,
+      trgovina: @trgovina,
+      url: @url,
+      cijene: @cijene.map(&:to_h)
+    }
+  end
+
+  def self.from_h(hash)
+    proizvod = new(
+      naziv: hash[:naziv],
+      trgovina: hash[:trgovina],
+      url: hash[:url]
+    )
+
+    hash[:cijene].each do |c|
+      proizvod.dodaj_cijenu(Cijena.from_h(c))
+    end
+
+    proizvod
+  end
 end
 

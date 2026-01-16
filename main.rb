@@ -6,6 +6,7 @@ require_relative "lib/models/cijena"
 require_relative "lib/scrapers/scraper"
 require_relative "lib/scrapers/links_scraper"
 require_relative "lib/scrapers/instar_scraper"
+require_relative "services/proizvod_store"
 
 SCRAPERS = {
   "Links" => LinksScraper,
@@ -58,5 +59,10 @@ loop do
   end
 
   puts proizvodi
-  #seriajizacija
+  puts "---------------------------------------"
+  puts "1-Spremi proizvode, 2-Pretraži drigi proizvod"
+  izbor = gets.chomp.to_i
+  if izbor == 1
+    ProizvodStore.new.save(proizvodi)
+  end
 end
