@@ -38,9 +38,37 @@ def checkMissingStores(proizvod)
   available.values.map { |scraper_class| scraper_class.new }
 end
 
-puts "=== Price Tracker ==="
+def odaberiProizvodMenu()
+  puts "Proizvodi:"
+  proizvodi = ProizvodStore.new.load
+  proizvodi.each_with_index do |proizvod, index|
+    puts "#{index} - #{proizvod.naziv} (#{proizvod.trgovina})"
+  end
 
-loop do
+  index = gets.chomp.to_i
+  proizvod = proizvodi[index]
+
+  loop do
+    puts "1-Trenutna cijena, 2-minimalna cijena, 3-maksimalna cijena, 4-prosjecna cijena, 5-Kraj"
+    izbor = gets.chomp.to_i
+    case izbor
+    when 1
+      puts proizvod.trenutna_cijena
+    when 2
+      puts proizvod.minimalna_cijena
+    when 3
+      puts proizvod.maksimalna_cijena
+    when 4
+      puts proizvod.prosjecna_cijena
+    when 5
+      break
+    else
+      puts "Greška, ponovo unesite izbor."
+    end
+  end
+end
+
+def dohvatiProizvodeMenu()
   puts "Unesi URL"
   url = gets.chomp
   scraper = getScraper(url)
@@ -64,5 +92,23 @@ loop do
   izbor = gets.chomp.to_i
   if izbor == 1
     ProizvodStore.new.save(proizvodi)
+  end
+end
+
+puts "=== Price Tracker ==="
+
+loop do
+  puts "1-Dohvati proizvode, 2-Odaberi proizvod, 3-Kraj"
+  izbor = gets.chomp.to_i
+
+  case izbor
+  when 1
+    dohvatiProizvodeMenu()
+  when 2
+    odaberiProizvodMenu()
+  when 3
+    break
+  else
+    puts "Greška, ponovo unesite izbor."
   end
 end
