@@ -2,7 +2,7 @@
 # lib/storage/yaml_store.rb
 require "yaml"
 require "fileutils"
-require_relative "../lib/models/proizvod"
+require_relative "../models/proizvod"
 
 class ProizvodStore
   FILE_PATH = "data/proizvodi.yml"

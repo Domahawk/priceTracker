@@ -37,7 +37,7 @@ class Proizvod
   end
 
   def to_s
-    "#{@naziv} (#{@trgovina}) - #{trenutna_cijena} EUR"
+    "Naziv: #{@naziv}\nTrgovina: (#{@trgovina})\nCijena: #{trenutna_cijena} EUR\nLink: #{@url}"
   end
 
   def to_h
