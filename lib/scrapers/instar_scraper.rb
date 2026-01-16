@@ -5,6 +5,7 @@ require "open-uri"
 require_relative "scraper"
 require_relative "../models/proizvod"
 require_relative "../models/cijena"
+require_relative "../browser"
 
 class InstarScraper < Scraper
   USER_AGENT = "Mozilla/5.0 (PriceTrackerBot)"
@@ -20,6 +21,8 @@ class InstarScraper < Scraper
     naziv = driver.find_element(class: "c-title").text
     cijena_text = driver.find_element(class: "mainprice").text
 
+    driver.quit
+
     return nil if naziv.nil? || cijena_text.nil?
 
     iznos = cijena_text
@@ -29,7 +32,7 @@ class InstarScraper < Scraper
 
     proizvod = Proizvod.new(
       naziv: naziv,
-      trgovina: "Links",
+      trgovina: "Instar",
       url: url
     )
 
@@ -49,10 +52,15 @@ class InstarScraper < Scraper
 
       wait = Selenium::WebDriver::Wait.new(timeout: 15)
 
-    wait.until { driver.find_element(css: "div.product-image a") }
+    wait.until { driver.find_element(css: "div.product-content h2.title a.productEntityClick") }
 
-    link = driver.find_element(css: "div.product-image a").attribute("href")
+    link = driver.find_element(css: "div.product-content h2.title a.productEntityClick").attribute("href")
+
+    puts link
+
+    driver.quit
 
     dohvati_proizvod(link)
   end
 end
+

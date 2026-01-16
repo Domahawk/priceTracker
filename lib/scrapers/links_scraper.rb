@@ -25,10 +25,12 @@ class LinksScraper < Scraper
       # popup se možda već zatvorio — ignoriraj
     end
 
-    wait.until { driver.find_element(class: "card-link") }
+    wait.until { driver.find_element(css: "span[class^='price-value-']") }
 
     naziv = driver.find_element(css: "div.product-name h1").text
-    cijena_text = driver.find_element(css: "div.prices span.old-price").text
+    cijena_text = driver.find_element(css: "span[class^='price-value-']").text
+
+    driver.quit
 
     return nil if naziv.nil? || cijena_text.nil?
 
@@ -70,6 +72,8 @@ class LinksScraper < Scraper
     wait.until { driver.find_element(class: "card-link") }
 
     link = driver.find_element(class: "card-link").attribute("href")
+
+    driver.quit
 
     dohvati_proizvod(link)
   rescue
