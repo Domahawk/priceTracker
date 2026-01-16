@@ -2,7 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     bigdecimal (4.0.1)
+    childprocess (4.1.0)
     csv (3.3.5)
+    dotenv (3.2.0)
     httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
@@ -27,6 +29,16 @@ GEM
     nokogiri (1.19.0-x86_64-linux-musl)
       racc (~> 1.4)
     racc (1.8.1)
+    rexml (3.4.4)
+    rubyzip (3.2.2)
+    selenium-webdriver (4.1.0)
+      childprocess (>= 0.5, < 5.0)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2)
+    webdrivers (5.3.1)
+      nokogiri (~> 1.6)
+      rubyzip (>= 1.3.0)
+      selenium-webdriver (~> 4.0, < 4.11)
     yaml (0.4.0)
 
 PLATFORMS
@@ -40,13 +52,18 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  dotenv
   httparty
   nokogiri
+  selenium-webdriver
+  webdrivers
   yaml
 
 CHECKSUMS
   bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
+  childprocess (4.1.0) sha256=3616ce99ccb242361ce7f2b19bf9ff3e6bc1d98b927c7edc29af8ca617ba6cd3
   csv (3.3.5) sha256=6e5134ac3383ef728b7f02725d9872934f523cb40b961479f69cf3afa6c8e73f
+  dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
   httparty (0.24.0) sha256=cd93eec3d92c327df77b545e71123a38394e5ae723fb739bca18e0e75143b0ac
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
@@ -59,6 +76,10 @@ CHECKSUMS
   nokogiri (1.19.0-x86_64-linux-gnu) sha256=f482b95c713d60031d48c44ce14562f8d2ce31e3a9e8dd0ccb131e9e5a68b58c
   nokogiri (1.19.0-x86_64-linux-musl) sha256=1c4ca6b381622420073ce6043443af1d321e8ed93cc18b08e2666e5bd02ffae4
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
+  rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
+  rubyzip (3.2.2) sha256=c0ed99385f0625415c8f05bcae33fe649ed2952894a95ff8b08f26ca57ea5b3c
+  selenium-webdriver (4.1.0) sha256=076f13aa6317fb77a27409754b58c26387d5160b9d713311c147324054a7119e
+  webdrivers (5.3.1) sha256=d7d5531fbc3c44b6a2a7710e3e6c5edc54f35c68af20017309e3eccf15ec4aa5
   yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
 
 BUNDLED WITH
